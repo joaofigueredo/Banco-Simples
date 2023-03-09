@@ -1,0 +1,98 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Program
+{
+  public static void Main()
+  {
+    Poupanca conta1 = new Poupanca("Joao", "12345678900", 100);
+    Console.WriteLine(conta1.getNome());
+    Console.WriteLine(conta1.getCpf());
+    conta1.simular(3);
+    Console.WriteLine(conta1.getSaldo());
+
+    
+  }
+
+}
+
+public class Conta{
+  private string nome;
+  private string cpf;
+  protected double saldo;
+
+  public Conta(string nome, string cpf, float saldo){
+    this.nome = nome;
+    this.cpf = cpf;
+    this.saldo = saldo;
+  }
+
+  public string getNome(){
+    return this.nome;
+  }
+
+  public string getCpf(){
+    return this.cpf;
+  }
+
+  public double getSaldo(){
+    return this.saldo;
+  }
+}
+
+public class Corrente:Conta{
+  private bool ativado = false;
+
+  public Corrente(bool ativado, string nome, string cpf, float saldo):base(nome, cpf, saldo){
+    this.ativado = true;
+  }
+
+  public void depositar(float saldo){
+    if(saldo > 0){
+      this.saldo += saldo;
+    }
+    else{
+      Console.WriteLine("Saldo para deposito Insuficiente");
+    }
+  }
+
+  public void sacar(float saldo){
+   if((saldo > 0) && (saldo < this.saldo)){
+     this.saldo -= saldo;
+   }else if(saldo > this.saldo){
+     Console.WriteLine($"Saldo ultrapassa limite da conta, valor sacado {this.saldo}");
+     this.saldo = 0;
+   }
+   else{
+     Console.WriteLine("Saldo para deposito invalido");
+   }
+  }
+}
+
+public class Poupanca:Conta{
+ 
+
+  public Poupanca(string nome, string cpf, float saldo):base(nome, cpf, saldo){
+
+  }
+
+  public void depositar(float saldo){
+    if(saldo > 0){
+      this.saldo += saldo;
+    }
+    else{
+      Console.WriteLine("Saldo insuficiente");
+    }
+  }
+
+  public void simular(int quantidadeMes){//simular valor depois de x meses
+    double percentual = 0.1;
+    Console.WriteLine(percentual);
+
+    for(int i = 0; i < quantidadeMes; i++){
+      this.saldo = (this.saldo * percentual) + this.saldo;
+    }
+     
+  }
+}
